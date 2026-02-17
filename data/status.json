@@ -1,0 +1,13 @@
+{
+  "name": "Billy Status",
+  "state": "idle",
+  "stateText": "Waiting for user input",
+  "model": "opus 4",
+  "session": "main",
+  "messages": 149,
+  "lastUpdate": "2026-02-17T11:17:00Z",
+  "context": {
+    "used": 65000,
+    "total": 200000
+  }
+}

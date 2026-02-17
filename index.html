@@ -557,6 +557,126 @@
     .toast.success { border-color: var(--success); }
     .toast.error { border-color: var(--error); }
     
+    /* Status Bar */
+    .status-bar {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+      animation: pulse 2s infinite;
+    }
+    
+    .status-dot.idle {
+      background: var(--warning);
+      box-shadow: 0 0 8px var(--warning);
+      animation: none;
+    }
+    
+    .status-dot.error {
+      background: var(--error);
+      box-shadow: 0 0 8px var(--error);
+      animation: none;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .status-info h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+    }
+    
+    .status-info p {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    .status-center {
+      flex: 1;
+      max-width: 500px;
+    }
+    
+    .context-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.35rem;
+    }
+    
+    .context-bar {
+      height: 8px;
+      background: var(--bg-card);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .context-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--success), var(--warning));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    
+    .context-fill.high {
+      background: linear-gradient(90deg, var(--warning), var(--error));
+    }
+    
+    .context-remaining {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-top: 0.25rem;
+    }
+    
+    .status-right {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .status-stat {
+      text-align: center;
+    }
+    
+    .status-stat-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .status-stat-label {
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
     @keyframes slideIn {
       from { transform: translateX(100%); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
@@ -623,6 +743,49 @@
         <button class="btn" onclick="loadData()">↻ Refresh</button>
       </div>
     </header>
+
+    <!-- Billy Status Bar -->
+    <div class="status-bar" id="status-bar">
+      <div class="status-left">
+        <div class="status-indicator">
+          <div class="status-dot idle" id="status-dot"></div>
+          <div class="status-info">
+            <h4 id="status-name">Billy Status</h4>
+            <p id="status-text">Waiting for user input</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="status-center">
+        <div class="context-label">
+          <span>Context Usage</span>
+          <span id="context-tokens">0k / 200k tokens</span>
+        </div>
+        <div class="context-bar">
+          <div class="context-fill" id="context-fill" style="width: 0%"></div>
+        </div>
+        <div class="context-remaining" id="context-remaining">~1000+ messages remaining</div>
+      </div>
+      
+      <div class="status-right">
+        <div class="status-stat">
+          <div class="status-stat-value" id="status-model">opus 4</div>
+          <div class="status-stat-label">Model</div>
+        </div>
+        <div class="status-stat">
+          <div class="status-stat-value" id="status-session">main</div>
+          <div class="status-stat-label">Session</div>
+        </div>
+        <div class="status-stat">
+          <div class="status-stat-value" id="status-messages">0</div>
+          <div class="status-stat-label">Messages</div>
+        </div>
+        <div class="status-stat">
+          <div class="status-stat-value" id="status-update">--:--</div>
+          <div class="status-stat-label">Last Update</div>
+        </div>
+      </div>
+    </div>
 
     <main class="main">
       <section class="kanban" id="kanban"></section>
@@ -747,10 +910,11 @@
     // Load data from JSON files + localStorage overrides
     async function loadData() {
       try {
-        const [baseTasks, activity, projects] = await Promise.all([
+        const [baseTasks, activity, projects, status] = await Promise.all([
           fetch('data/tasks.json').then(r => r.json()),
           fetch('data/activity.json').then(r => r.json()),
-          fetch('data/projects.json').then(r => r.json())
+          fetch('data/projects.json').then(r => r.json()),
+          fetch('data/status.json').then(r => r.json()).catch(() => null)
         ]);
         
         // Check for local overrides
@@ -763,11 +927,59 @@
         
         activityData = activity;
         projectsData = projects;
+        
+        if (status) renderStatus(status);
         render();
         showToast('Data loaded', 'success');
       } catch (e) {
         console.error('Error loading data:', e);
         showToast('Error loading data', 'error');
+      }
+    }
+    
+    // Render Billy Status Bar
+    function renderStatus(status) {
+      const dot = document.getElementById('status-dot');
+      const name = document.getElementById('status-name');
+      const text = document.getElementById('status-text');
+      const tokens = document.getElementById('context-tokens');
+      const fill = document.getElementById('context-fill');
+      const remaining = document.getElementById('context-remaining');
+      const model = document.getElementById('status-model');
+      const session = document.getElementById('status-session');
+      const messages = document.getElementById('status-messages');
+      const update = document.getElementById('status-update');
+      
+      // Status dot
+      dot.className = 'status-dot ' + (status.state || 'idle');
+      name.textContent = status.name || 'Billy Status';
+      text.textContent = status.stateText || 'Ready';
+      
+      // Context usage
+      const used = status.context?.used || 0;
+      const total = status.context?.total || 200000;
+      const percent = Math.round((used / total) * 100);
+      const usedK = (used / 1000).toFixed(1);
+      const totalK = (total / 1000).toFixed(0);
+      
+      tokens.textContent = `${usedK}k / ${totalK}k tokens`;
+      fill.style.width = `${percent}%`;
+      fill.className = 'context-fill' + (percent > 70 ? ' high' : '');
+      
+      // Estimate remaining messages (~500 tokens per exchange)
+      const remainingTokens = total - used;
+      const estMessages = Math.floor(remainingTokens / 500);
+      remaining.textContent = estMessages > 1000 ? '~1000+ messages remaining' : `~${estMessages} messages remaining`;
+      
+      // Stats
+      model.textContent = status.model || 'opus 4';
+      session.textContent = status.session || 'main';
+      messages.textContent = status.messages || '0';
+      
+      // Last update time
+      if (status.lastUpdate) {
+        const d = new Date(status.lastUpdate);
+        update.textContent = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
       }
     }
 
