@@ -1,0 +1,17 @@
+{
+  "tasks": [
+    {
+      "id": "personal-001",
+      "title": "Weekly meal prep",
+      "status": "backlog",
+      "createdAt": "2026-02-16T10:00:00Z"
+    },
+    {
+      "id": "personal-002",
+      "title": "Schedule dentist appointment",
+      "status": "backlog",
+      "createdAt": "2026-02-16T10:00:00Z"
+    }
+  ],
+  "lastUpdated": "2026-02-16T22:00:00Z"
+}

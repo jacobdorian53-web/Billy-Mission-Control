@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Dashboard 🌟</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg-primary: #0f0f0f;
+      --bg-secondary: #1a1a1a;
+      --bg-card: #242424;
+      --bg-hover: #2a2a2a;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a0;
+      --accent: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.3);
+      --success: #22c55e;
+      --warning: #eab308;
+      --error: #ef4444;
+      --info: #3b82f6;
+      --purple: #a855f7;
+      --pink: #ec4899;
+      --border: #333;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+    }
+    
+    /* Sidebar Navigation */
+    .sidebar-nav {
+      width: 220px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      z-index: 200;
+      transition: transform 0.3s ease;
+    }
+    
+    .sidebar-logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent);
+    }
+    
+    .nav-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .nav-section-title {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+    }
+    
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      margin-bottom: 0.25rem;
+    }
+    
+    .nav-link:hover {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+    
+    .nav-link.active {
+      background: var(--accent);
+      color: var(--bg-primary);
+      font-weight: 600;
+    }
+    
+    .nav-icon {
+      font-size: 1.1rem;
+    }
+    
+    /* Mobile menu toggle */
+    .mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 300;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.25rem;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 220px;
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .header-date {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    /* Dashboard Grid */
+    .dashboard {
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    
+    .card {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .card-title {
+      font-weight: 600;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .card-full {
+      grid-column: span 2;
+    }
+    
+    .card-third {
+      grid-column: span 1;
+    }
+    
+    /* Fitness Section */
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--accent), var(--warning));
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .workout-form {
+      display: grid;
+      grid-template-columns: 1fr 100px 1fr auto;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    
+    .form-input, .form-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+    
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    
+    .btn {
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--bg-primary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    
+    .btn-small {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+    }
+    
+    .workout-list {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .workout-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: var(--bg-card);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .workout-info {
+      flex: 1;
+    }
+    
+    .workout-type {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .workout-details {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    
+    .workout-date {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    /* Personal Tasks Kanban */
+    .kanban-mini {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    
+    .kanban-col {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 0.75rem;
+      min-height: 150px;
+    }
+    
+    .kanban-col-header {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .kanban-col-backlog .kanban-col-header { color: var(--text-secondary); }
+    .kanban-col-in_progress .kanban-col-header { color: var(--info); }
+    .kanban-col-done .kanban-col-header { color: var(--success); }
+    
+    .task-mini {
+      background: var(--bg-secondary);
+      padding: 0.6rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    
+    .task-mini:hover {
+      border-color: var(--accent);
+    }
+    
+    .add-task-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .add-task-form input {
+      flex: 1;
+    }
+    
+    /* Goals Section */
+    .goal-item {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+    
+    .goal-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+    
+    .goal-type {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .goal-type.quarterly { background: rgba(168, 85, 247, 0.2); color: var(--purple); }
+    .goal-type.annual { background: rgba(236, 72, 153, 0.2); color: var(--pink); }
+    
+    .goal-progress-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .goal-progress-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .goal-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+    
+    .goal-progress-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 45px;
+      text-align: right;
+      cursor: pointer;
+    }
+    
+    .goal-progress-text:hover {
+      text-decoration: underline;
+    }
+    
+    /* Quick Capture */
+    .capture-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .capture-form input {
+      flex: 1;
+    }
+    
+    .capture-list {
+      max-height: 150px;
+      overflow-y: auto;
+    }
+    
+    .capture-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem;
+      background: var(--bg-card);
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+    }
+    
+    .capture-text {
+      flex: 1;
+    }
+    
+    .capture-time {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-left: 0.5rem;
+    }
+    
+    .capture-delete {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.25rem;
+      font-size: 1rem;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    
+    .capture-delete:hover {
+      opacity: 1;
+      color: var(--error);
+    }
+    
+    /* Reading List */
+    .reading-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .reading-tab {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+    
+    .reading-tab.active {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+    }
+    
+    .reading-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: var(--bg-card);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .reading-info {
+      flex: 1;
+    }
+    
+    .reading-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .reading-author {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    
+    .reading-status {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    
+    .reading-status.reading { background: rgba(59, 130, 246, 0.2); color: var(--info); }
+    .reading-status.completed { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .reading-status.backlog { background: rgba(160, 160, 160, 0.2); color: var(--text-secondary); }
+    
+    .add-reading-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    /* Quote Section */
+    .quote-card {
+      background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+      border: 1px solid var(--border);
+    }
+    
+    .quote-text {
+      font-size: 1.1rem;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+    
+    .quote-author {
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-align: right;
+    }
+    
+    .quote-refresh {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    /* Placeholder Cards */
+    .placeholder-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 150px;
+      border: 2px dashed var(--border);
+      background: transparent;
+    }
+    
+    .placeholder-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.5;
+    }
+    
+    .placeholder-text {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+    }
+    
+    .modal {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 90%;
+      max-width: 400px;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .dashboard {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .card-full {
+        grid-column: span 2;
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .sidebar-nav {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar-nav.open {
+        transform: translateX(0);
+      }
+      
+      .mobile-toggle {
+        display: block;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .dashboard {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+      
+      .card-full {
+        grid-column: span 1;
+      }
+      
+      .workout-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .kanban-mini {
+        grid-template-columns: 1fr;
+      }
+      
+      .header {
+        padding-left: 4rem;
+      }
+    }
+    
+    @media (max-width: 500px) {
+      .add-reading-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .reading-tabs {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+  
+  <nav class="sidebar-nav" id="sidebar">
+    <div class="sidebar-logo">⚡ Life OS</div>
+    
+    <div class="nav-section">
+      <div class="nav-section-title">Dashboards</div>
+      <a href="index.html" class="nav-link">
+        <span class="nav-icon">🎯</span>
+        <span>Mission Control</span>
+      </a>
+      <a href="life.html" class="nav-link active">
+        <span class="nav-icon">🌟</span>
+        <span>Life Dashboard</span>
+      </a>
+    </div>
+    
+    <div class="nav-section">
+      <div class="nav-section-title">Quick Links</div>
+      <a href="#fitness" class="nav-link" onclick="scrollToSection('fitness')">
+        <span class="nav-icon">💪</span>
+        <span>Fitness</span>
+      </a>
+      <a href="#goals" class="nav-link" onclick="scrollToSection('goals')">
+        <span class="nav-icon">🎯</span>
+        <span>Goals</span>
+      </a>
+      <a href="#reading" class="nav-link" onclick="scrollToSection('reading')">
+        <span class="nav-icon">📚</span>
+        <span>Reading</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <header class="header">
+      <h1 class="page-title">🌟 Life Dashboard</h1>
+      <div class="header-date" id="current-date"></div>
+    </header>
+
+    <div class="dashboard">
+      <!-- Daily Quote -->
+      <div class="card quote-card">
+        <div class="card-header">
+          <h2 class="card-title">💡 Daily Wisdom</h2>
+          <button class="quote-refresh" onclick="newQuote()">🔄</button>
+        </div>
+        <div class="quote-text" id="quote-text"></div>
+        <div class="quote-author" id="quote-author"></div>
+      </div>
+      
+      <!-- Quick Capture -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">📝 Quick Capture</h2>
+        </div>
+        <form class="capture-form" onsubmit="addCapture(event)">
+          <input type="text" class="form-input" id="capture-input" placeholder="Capture a thought, idea, or note...">
+          <button type="submit" class="btn">+</button>
+        </form>
+        <div class="capture-list" id="capture-list"></div>
+      </div>
+      
+      <!-- Fitness Tracker -->
+      <div class="card card-full" id="fitness">
+        <div class="card-header">
+          <h2 class="card-title">💪 Fitness Tracker</h2>
+        </div>
+        <div class="streak-badge" id="streak-badge">
+          🔥 <span id="streak-count">0</span> Day Streak
+        </div>
+        <form class="workout-form" onsubmit="addWorkout(event)">
+          <select class="form-select" id="workout-type">
+            <option value="Strength Training">🏋️ Strength Training</option>
+            <option value="Running">🏃 Running</option>
+            <option value="Cycling">🚴 Cycling</option>
+            <option value="Swimming">🏊 Swimming</option>
+            <option value="Yoga">🧘 Yoga</option>
+            <option value="HIIT">⚡ HIIT</option>
+            <option value="Walking">🚶 Walking</option>
+            <option value="Other">📌 Other</option>
+          </select>
+          <input type="number" class="form-input" id="workout-duration" placeholder="Min" min="1" required>
+          <input type="text" class="form-input" id="workout-notes" placeholder="Notes (optional)">
+          <button type="submit" class="btn">Log Workout</button>
+        </form>
+        <div class="workout-list" id="workout-list"></div>
+      </div>
+      
+      <!-- Personal Tasks -->
+      <div class="card card-full">
+        <div class="card-header">
+          <h2 class="card-title">✅ Personal Tasks</h2>
+        </div>
+        <div class="kanban-mini">
+          <div class="kanban-col kanban-col-backlog">
+            <div class="kanban-col-header">📥 Backlog</div>
+            <div id="tasks-backlog"></div>
+          </div>
+          <div class="kanban-col kanban-col-in_progress">
+            <div class="kanban-col-header">🔄 In Progress</div>
+            <div id="tasks-in_progress"></div>
+          </div>
+          <div class="kanban-col kanban-col-done">
+            <div class="kanban-col-header">✅ Done</div>
+            <div id="tasks-done"></div>
+          </div>
+        </div>
+        <form class="add-task-form" onsubmit="addPersonalTask(event)">
+          <input type="text" class="form-input" id="new-task-input" placeholder="Add a new task...">
+          <button type="submit" class="btn">Add</button>
+        </form>
+      </div>
+      
+      <!-- Goals Section -->
+      <div class="card card-full" id="goals">
+        <div class="card-header">
+          <h2 class="card-title">🎯 Goals</h2>
+        </div>
+        <div id="goals-list"></div>
+      </div>
+      
+      <!-- Reading List -->
+      <div class="card" id="reading">
+        <div class="card-header">
+          <h2 class="card-title">📚 Reading List</h2>
+        </div>
+        <div class="reading-tabs">
+          <button class="reading-tab active" data-filter="all" onclick="filterReading('all')">All</button>
+          <button class="reading-tab" data-filter="reading" onclick="filterReading('reading')">Reading</button>
+          <button class="reading-tab" data-filter="completed" onclick="filterReading('completed')">Done</button>
+          <button class="reading-tab" data-filter="backlog" onclick="filterReading('backlog')">Backlog</button>
+        </div>
+        <div id="reading-list"></div>
+        <form class="add-reading-form" onsubmit="addReading(event)">
+          <input type="text" class="form-input" id="reading-title" placeholder="Title" required>
+          <input type="text" class="form-input" id="reading-author" placeholder="Author">
+          <button type="submit" class="btn">Add</button>
+        </form>
+      </div>
+      
+      <!-- Placeholders -->
+      <div class="card placeholder-card">
+        <div class="placeholder-icon">🏥</div>
+        <div class="placeholder-text">Health Metrics</div>
+        <div class="placeholder-text" style="font-size: 0.7rem; margin-top: 0.25rem;">Coming Soon</div>
+      </div>
+      
+      <div class="card placeholder-card">
+        <div class="placeholder-icon">💰</div>
+        <div class="placeholder-text">Finance Tracker</div>
+        <div class="placeholder-text" style="font-size: 0.7rem; margin-top: 0.25rem;">Coming Soon</div>
+      </div>
+      
+      <div class="card placeholder-card">
+        <div class="placeholder-icon">📅</div>
+        <div class="placeholder-text">Calendar</div>
+        <div class="placeholder-text" style="font-size: 0.7rem; margin-top: 0.25rem;">Coming Soon</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Edit Goal Modal -->
+  <div class="modal-overlay" id="goal-modal" onclick="closeGoalModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Update Goal Progress</h3>
+        <button class="modal-close" onclick="closeGoalModal()">&times;</button>
+      </div>
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Goal</label>
+          <div id="modal-goal-title" style="font-weight: 600;"></div>
+        </div>
+        <div class="form-group">
+          <label>Progress (%)</label>
+          <input type="number" class="form-input" id="modal-goal-progress" min="0" max="100">
+        </div>
+        <button class="btn" onclick="saveGoalProgress()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data storage
+    let fitnessData = { workouts: [], streakGoal: 5 };
+    let personalTasks = { tasks: [] };
+    let goalsData = { goals: [] };
+    let capturesData = { captures: [] };
+    let readingData = { items: [] };
+    let currentReadingFilter = 'all';
+    let editingGoalId = null;
+    
+    const quotes = [
+      { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+      { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+      { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+      { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+      { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
+      { text: "Your time is limited, don't waste it living someone else's life.", author: "Steve Jobs" },
+      { text: "The only limit to our realization of tomorrow is our doubts of today.", author: "Franklin D. Roosevelt" },
+      { text: "Do what you can, with what you have, where you are.", author: "Theodore Roosevelt" },
+      { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+      { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" }
+    ];
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAllData();
+      setCurrentDate();
+      displayQuote();
+    });
+    
+    function setCurrentDate() {
+      const now = new Date();
+      document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+      });
+    }
+    
+    // Load all data from localStorage or JSON files
+    async function loadAllData() {
+      // Try localStorage first, then fall back to JSON files
+      fitnessData = JSON.parse(localStorage.getItem('life_fitness')) || await fetchJSON('data/fitness.json');
+      personalTasks = JSON.parse(localStorage.getItem('life_personal_tasks')) || await fetchJSON('data/personal-tasks.json');
+      goalsData = JSON.parse(localStorage.getItem('life_goals')) || await fetchJSON('data/goals.json');
+      capturesData = JSON.parse(localStorage.getItem('life_captures')) || await fetchJSON('data/captures.json');
+      readingData = JSON.parse(localStorage.getItem('life_reading')) || await fetchJSON('data/reading.json');
+      
+      renderAll();
+    }
+    
+    async function fetchJSON(path) {
+      try {
+        const res = await fetch(path);
+        return await res.json();
+      } catch (e) {
+        console.warn('Could not load', path);
+        return null;
+      }
+    }
+    
+    function saveData(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+    
+    function renderAll() {
+      renderWorkouts();
+      renderPersonalTasks();
+      renderGoals();
+      renderCaptures();
+      renderReading();
+    }
+    
+    // Quote functions
+    function displayQuote() {
+      const todayIndex = new Date().getDate() % quotes.length;
+      const quote = quotes[todayIndex];
+      document.getElementById('quote-text').textContent = `"${quote.text}"`;
+      document.getElementById('quote-author').textContent = `— ${quote.author}`;
+    }
+    
+    function newQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      const quote = quotes[randomIndex];
+      document.getElementById('quote-text').textContent = `"${quote.text}"`;
+      document.getElementById('quote-author').textContent = `— ${quote.author}`;
+    }
+    
+    // Fitness functions
+    function calculateStreak() {
+      if (!fitnessData.workouts.length) return 0;
+      
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const sortedWorkouts = [...fitnessData.workouts].sort((a, b) => 
+        new Date(b.date) - new Date(a.date)
+      );
+      
+      let streak = 0;
+      let checkDate = new Date(today);
+      
+      for (let i = 0; i < 30; i++) {
+        const hasWorkout = sortedWorkouts.some(w => {
+          const workoutDate = new Date(w.date);
+          workoutDate.setHours(0, 0, 0, 0);
+          return workoutDate.getTime() === checkDate.getTime();
+        });
+        
+        if (hasWorkout) {
+          streak++;
+          checkDate.setDate(checkDate.getDate() - 1);
+        } else if (i === 0) {
+          checkDate.setDate(checkDate.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+      
+      return streak;
+    }
+    
+    function renderWorkouts() {
+      const streak = calculateStreak();
+      document.getElementById('streak-count').textContent = streak;
+      
+      const list = document.getElementById('workout-list');
+      const recentWorkouts = [...fitnessData.workouts]
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 5);
+      
+      list.innerHTML = recentWorkouts.map(w => {
+        const date = new Date(w.date);
+        const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        return `
+          <div class="workout-item">
+            <div class="workout-info">
+              <div class="workout-type">${w.type}</div>
+              <div class="workout-details">${w.duration} min${w.notes ? ' • ' + w.notes : ''}</div>
+            </div>
+            <div class="workout-date">${dateStr}</div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    function addWorkout(e) {
+      e.preventDefault();
+      const type = document.getElementById('workout-type').value;
+      const duration = parseInt(document.getElementById('workout-duration').value);
+      const notes = document.getElementById('workout-notes').value;
+      
+      const workout = {
+        id: 'workout-' + Date.now(),
+        type,
+        duration,
+        notes,
+        date: new Date().toISOString()
+      };
+      
+      fitnessData.workouts.push(workout);
+      saveData('life_fitness', fitnessData);
+      renderWorkouts();
+      
+      document.getElementById('workout-duration').value = '';
+      document.getElementById('workout-notes').value = '';
+    }
+    
+    // Personal Tasks functions
+    function renderPersonalTasks() {
+      const statuses = ['backlog', 'in_progress', 'done'];
+      statuses.forEach(status => {
+        const container = document.getElementById(`tasks-${status}`);
+        const tasks = personalTasks.tasks.filter(t => t.status === status);
+        
+        container.innerHTML = tasks.map(t => `
+          <div class="task-mini" onclick="cycleTaskStatus('${t.id}')">
+            ${t.title}
+          </div>
+        `).join('');
+      });
+    }
+    
+    function addPersonalTask(e) {
+      e.preventDefault();
+      const title = document.getElementById('new-task-input').value.trim();
+      if (!title) return;
+      
+      const task = {
+        id: 'personal-' + Date.now(),
+        title,
+        status: 'backlog',
+        createdAt: new Date().toISOString()
+      };
+      
+      personalTasks.tasks.push(task);
+      saveData('life_personal_tasks', personalTasks);
+      renderPersonalTasks();
+      
+      document.getElementById('new-task-input').value = '';
+    }
+    
+    function cycleTaskStatus(taskId) {
+      const task = personalTasks.tasks.find(t => t.id === taskId);
+      if (!task) return;
+      
+      const statusOrder = ['backlog', 'in_progress', 'done'];
+      const currentIndex = statusOrder.indexOf(task.status);
+      task.status = statusOrder[(currentIndex + 1) % statusOrder.length];
+      
+      saveData('life_personal_tasks', personalTasks);
+      renderPersonalTasks();
+    }
+    
+    // Goals functions
+    function renderGoals() {
+      const list = document.getElementById('goals-list');
+      
+      list.innerHTML = goalsData.goals.map(goal => `
+        <div class="goal-item">
+          <div class="goal-header">
+            <div class="goal-title">${goal.title}</div>
+            <span class="goal-type ${goal.type}">${goal.type}</span>
+          </div>
+          <div class="goal-progress-container">
+            <div class="goal-progress-bar">
+              <div class="goal-progress-fill" style="width: ${goal.progress}%"></div>
+            </div>
+            <div class="goal-progress-text" onclick="openGoalModal('${goal.id}')">${goal.progress}%</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function openGoalModal(goalId) {
+      const goal = goalsData.goals.find(g => g.id === goalId);
+      if (!goal) return;
+      
+      editingGoalId = goalId;
+      document.getElementById('modal-goal-title').textContent = goal.title;
+      document.getElementById('modal-goal-progress').value = goal.progress;
+      document.getElementById('goal-modal').classList.add('active');
+    }
+    
+    function closeGoalModal(event) {
+      if (!event || event.target === event.currentTarget) {
+        document.getElementById('goal-modal').classList.remove('active');
+        editingGoalId = null;
+      }
+    }
+    
+    function saveGoalProgress() {
+      if (!editingGoalId) return;
+      
+      const goal = goalsData.goals.find(g => g.id === editingGoalId);
+      if (!goal) return;
+      
+      goal.progress = parseInt(document.getElementById('modal-goal-progress').value) || 0;
+      saveData('life_goals', goalsData);
+      renderGoals();
+      closeGoalModal();
+    }
+    
+    // Captures functions
+    function renderCaptures() {
+      const list = document.getElementById('capture-list');
+      const captures = [...capturesData.captures]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 10);
+      
+      list.innerHTML = captures.map(c => {
+        const time = new Date(c.createdAt).toLocaleString('en-US', {
+          month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+        });
+        return `
+          <div class="capture-item">
+            <span class="capture-text">${c.text}</span>
+            <span class="capture-time">${time}</span>
+            <button class="capture-delete" onclick="deleteCapture('${c.id}')">×</button>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    function addCapture(e) {
+      e.preventDefault();
+      const text = document.getElementById('capture-input').value.trim();
+      if (!text) return;
+      
+      const capture = {
+        id: 'capture-' + Date.now(),
+        text,
+        createdAt: new Date().toISOString()
+      };
+      
+      capturesData.captures.push(capture);
+      saveData('life_captures', capturesData);
+      renderCaptures();
+      
+      document.getElementById('capture-input').value = '';
+    }
+    
+    function deleteCapture(captureId) {
+      capturesData.captures = capturesData.captures.filter(c => c.id !== captureId);
+      saveData('life_captures', capturesData);
+      renderCaptures();
+    }
+    
+    // Reading functions
+    function renderReading() {
+      const list = document.getElementById('reading-list');
+      let items = readingData.items;
+      
+      if (currentReadingFilter !== 'all') {
+        items = items.filter(i => i.status === currentReadingFilter);
+      }
+      
+      list.innerHTML = items.map(item => `
+        <div class="reading-item">
+          <div class="reading-info">
+            <div class="reading-title">${item.title}</div>
+            <div class="reading-author">${item.author || 'Unknown'}</div>
+          </div>
+          <span class="reading-status ${item.status}" onclick="cycleReadingStatus('${item.id}')">${item.status}</span>
+        </div>
+      `).join('');
+    }
+    
+    function filterReading(filter) {
+      currentReadingFilter = filter;
+      document.querySelectorAll('.reading-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.filter === filter);
+      });
+      renderReading();
+    }
+    
+    function addReading(e) {
+      e.preventDefault();
+      const title = document.getElementById('reading-title').value.trim();
+      const author = document.getElementById('reading-author').value.trim();
+      if (!title) return;
+      
+      const item = {
+        id: 'read-' + Date.now(),
+        title,
+        author,
+        type: 'book',
+        status: 'backlog',
+        addedAt: new Date().toISOString()
+      };
+      
+      readingData.items.push(item);
+      saveData('life_reading', readingData);
+      renderReading();
+      
+      document.getElementById('reading-title').value = '';
+      document.getElementById('reading-author').value = '';
+    }
+    
+    function cycleReadingStatus(itemId) {
+      const item = readingData.items.find(i => i.id === itemId);
+      if (!item) return;
+      
+      const statusOrder = ['backlog', 'reading', 'completed'];
+      const currentIndex = statusOrder.indexOf(item.status);
+      item.status = statusOrder[(currentIndex + 1) % statusOrder.length];
+      
+      saveData('life_reading', readingData);
+      renderReading();
+    }
+    
+    // Navigation
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+    
+    function scrollToSection(sectionId) {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('sidebar').classList.remove('open');
+    }
+    
+    // Close sidebar on outside click (mobile)
+    document.addEventListener('click', (e) => {
+      const sidebar = document.getElementById('sidebar');
+      const toggle = document.querySelector('.mobile-toggle');
+      if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeGoalModal();
+    });
+  </script>
+</body>
+</html>

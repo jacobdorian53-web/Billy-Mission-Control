@@ -1,0 +1,37 @@
+{
+  "goals": [
+    {
+      "id": "goal-001",
+      "title": "Hit $50k MRR with Solace Bands",
+      "type": "quarterly",
+      "progress": 35,
+      "deadline": "2026-03-31",
+      "notes": "Currently at ~$17.5k MRR"
+    },
+    {
+      "id": "goal-002",
+      "title": "Launch Hydro Vitality profitably",
+      "type": "quarterly",
+      "progress": 20,
+      "deadline": "2026-03-31",
+      "notes": "Phase 1 creative testing underway"
+    },
+    {
+      "id": "goal-003",
+      "title": "Read 12 books this year",
+      "type": "annual",
+      "progress": 8,
+      "deadline": "2026-12-31",
+      "notes": "1 book per month target"
+    },
+    {
+      "id": "goal-004",
+      "title": "Workout 200 days this year",
+      "type": "annual",
+      "progress": 15,
+      "deadline": "2026-12-31",
+      "notes": "About 4x per week average"
+    }
+  ],
+  "lastUpdated": "2026-02-16T22:00:00Z"
+}

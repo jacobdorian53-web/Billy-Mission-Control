@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "id": "read-001",
+      "title": "Atomic Habits",
+      "author": "James Clear",
+      "type": "book",
+      "status": "completed",
+      "notes": "Great for building systems",
+      "addedAt": "2026-01-15T10:00:00Z"
+    },
+    {
+      "id": "read-002",
+      "title": "$100M Offers",
+      "author": "Alex Hormozi",
+      "type": "book",
+      "status": "reading",
+      "notes": "Applying to Hydro Vitality offer",
+      "addedAt": "2026-02-10T10:00:00Z"
+    },
+    {
+      "id": "read-003",
+      "title": "The Almanack of Naval Ravikant",
+      "author": "Eric Jorgenson",
+      "type": "book",
+      "status": "backlog",
+      "notes": "",
+      "addedAt": "2026-02-16T10:00:00Z"
+    }
+  ],
+  "lastUpdated": "2026-02-16T22:00:00Z"
+}

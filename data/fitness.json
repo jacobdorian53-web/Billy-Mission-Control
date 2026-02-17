@@ -1,0 +1,27 @@
+{
+  "workouts": [
+    {
+      "id": "workout-001",
+      "type": "Strength Training",
+      "duration": 45,
+      "notes": "Upper body - chest and triceps",
+      "date": "2026-02-16T07:00:00Z"
+    },
+    {
+      "id": "workout-002",
+      "type": "Running",
+      "duration": 30,
+      "notes": "3 mile morning run",
+      "date": "2026-02-15T06:30:00Z"
+    },
+    {
+      "id": "workout-003",
+      "type": "Strength Training",
+      "duration": 50,
+      "notes": "Leg day",
+      "date": "2026-02-14T07:00:00Z"
+    }
+  ],
+  "streakGoal": 5,
+  "lastUpdated": "2026-02-16T22:00:00Z"
+}
