@@ -35,7 +35,14 @@
       "description": "Skill-based mobile arcade game - daily ranked mode, competitive leaderboards",
       "status": "active",
       "color": "#EC4899"
+    },
+    {
+      "id": "media-buying",
+      "name": "Media Buying",
+      "description": "YouTube Ads, paid media strategy, creative testing across platforms",
+      "status": "active",
+      "color": "#EF4444"
     }
   ],
-  "lastUpdated": "2026-02-17T03:05:00Z"
+  "lastUpdated": "2026-02-17T14:20:00Z"
 }

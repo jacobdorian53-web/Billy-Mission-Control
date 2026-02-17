@@ -70,8 +70,80 @@
       "createdAt": "2026-02-17T03:04:00Z",
       "updatedAt": "2026-02-17T03:04:00Z",
       "tags": ["game-dev", "ios", "mobile"]
+    },
+    {
+      "id": "task-007",
+      "title": "📚 YouTube AI Ads: Audit TikTok/Meta creatives",
+      "description": "Identify top performers that could work on YouTube Shorts. TikTok creatives translate well to Shorts — 45% of Shorts users aren't on TikTok.",
+      "status": "backlog",
+      "priority": "high",
+      "project": "media-buying",
+      "createdAt": "2026-02-17T14:20:00Z",
+      "updatedAt": "2026-02-17T14:20:00Z",
+      "tags": ["youtube", "creative", "ai-ads"],
+      "notes": "Source: Echelonn playbook. Start with existing winners before creating new."
+    },
+    {
+      "id": "task-008",
+      "title": "📚 YouTube AI Ads: Pick product/angle to test",
+      "description": "Choose ONE product and angle to test on YouTube. Start simple — don't overthink targeting. Let creative do the segmentation.",
+      "status": "backlog",
+      "priority": "high",
+      "project": "media-buying",
+      "createdAt": "2026-02-17T14:20:00Z",
+      "updatedAt": "2026-02-17T14:20:00Z",
+      "tags": ["youtube", "strategy", "ai-ads"],
+      "notes": "Decide funnel type: Problem-aware → VSL | Solution-aware → Quiz"
+    },
+    {
+      "id": "task-009",
+      "title": "📚 YouTube AI Ads: Create 3-5 AI video variations",
+      "description": "Use the Echelonn script structures: Long-form (2-5 min) for VSL funnel or Shorts dialogue format for quiz funnel.",
+      "status": "backlog",
+      "priority": "medium",
+      "project": "media-buying",
+      "createdAt": "2026-02-17T14:20:00Z",
+      "updatedAt": "2026-02-17T14:20:00Z",
+      "tags": ["youtube", "creative", "ai-ads", "production"],
+      "notes": "Long-form structure: Hook → Problem → Villain → Stakes → Solution → Benefits → CTA → Close. Shorts: Qualifier + urgency, clear enemy, objection handling in dialogue."
+    },
+    {
+      "id": "task-010",
+      "title": "📚 YouTube AI Ads: Build landing page",
+      "description": "VSL sales letter for long-form ads OR quiz funnel for Shorts. Match funnel to audience awareness level.",
+      "status": "backlog",
+      "priority": "medium",
+      "project": "media-buying",
+      "createdAt": "2026-02-17T14:20:00Z",
+      "updatedAt": "2026-02-17T14:20:00Z",
+      "tags": ["youtube", "landing-page", "funnel"],
+      "notes": "Quiz funnels qualify, build engagement, and segment into right offer path."
+    },
+    {
+      "id": "task-011",
+      "title": "📚 YouTube AI Ads: Set up attribution tracking",
+      "description": "Track the halo effect — YT drives Google/Amazon/Shopify conversions it doesn't report. One brand saw 3.75X reported → 5.25X actual.",
+      "status": "backlog",
+      "priority": "medium",
+      "project": "media-buying",
+      "createdAt": "2026-02-17T14:20:00Z",
+      "updatedAt": "2026-02-17T14:20:00Z",
+      "tags": ["youtube", "analytics", "attribution"],
+      "notes": "Factor in Shopify and Amazon to get true ROAS."
+    },
+    {
+      "id": "task-012",
+      "title": "📚 YouTube AI Ads: Research AI video tools",
+      "description": "Find AI video generation tools for creating spokesperson/UGC-style ads at scale. Volume is key — brands doing $10M/mo launch 400+ creatives/month.",
+      "status": "backlog",
+      "priority": "low",
+      "project": "media-buying",
+      "createdAt": "2026-02-17T14:20:00Z",
+      "updatedAt": "2026-02-17T14:20:00Z",
+      "tags": ["youtube", "ai-tools", "production"],
+      "notes": "AI enables volume traditional production can't match."
     }
   ],
   "statuses": ["backlog", "in_progress", "review", "blocked", "done"],
-  "lastUpdated": "2026-02-17T03:05:00Z"
+  "lastUpdated": "2026-02-17T14:20:00Z"
 }
