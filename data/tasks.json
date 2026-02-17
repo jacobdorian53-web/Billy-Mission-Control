@@ -27,13 +27,15 @@
     {
       "id": "task-003",
       "title": "Build Mission Control Dashboard",
-      "description": "Create task tracking and activity dashboard similar to video reference",
-      "status": "in_progress",
+      "description": "Create task tracking and activity dashboard with Life Dashboard",
+      "status": "done",
       "priority": "high",
       "project": "billy-infrastructure",
       "createdAt": "2026-02-16T22:13:00Z",
-      "updatedAt": "2026-02-16T22:13:00Z",
-      "tags": ["tooling", "dashboard", "productivity"]
+      "updatedAt": "2026-02-17T03:05:00Z",
+      "tags": ["tooling", "dashboard", "productivity"],
+      "completedAt": "2026-02-17T03:05:00Z",
+      "notes": "V1 complete with Mission Control + Life Dashboard, all sections editable"
     },
     {
       "id": "task-004",
@@ -46,8 +48,30 @@
       "updatedAt": "2026-02-16T22:09:00Z",
       "tags": ["config", "memory"],
       "completedAt": "2026-02-16T22:09:00Z"
+    },
+    {
+      "id": "task-005",
+      "title": "Build CLUTCH Web Prototype",
+      "description": "Create playable browser prototype with core mechanic: auto-rotating orb, tap to dash through ring gaps",
+      "status": "in_progress",
+      "priority": "high",
+      "project": "clutch-game",
+      "createdAt": "2026-02-17T03:04:00Z",
+      "updatedAt": "2026-02-17T03:04:00Z",
+      "tags": ["game-dev", "prototype", "web"]
+    },
+    {
+      "id": "task-006",
+      "title": "CLUTCH iOS App Development",
+      "description": "Port prototype to native iOS with Swift/Flutter, add daily ranked mode, leaderboards, social features",
+      "status": "backlog",
+      "priority": "medium",
+      "project": "clutch-game",
+      "createdAt": "2026-02-17T03:04:00Z",
+      "updatedAt": "2026-02-17T03:04:00Z",
+      "tags": ["game-dev", "ios", "mobile"]
     }
   ],
   "statuses": ["backlog", "in_progress", "review", "blocked", "done"],
-  "lastUpdated": "2026-02-16T22:13:00Z"
+  "lastUpdated": "2026-02-17T03:05:00Z"
 }

@@ -28,7 +28,14 @@
       "description": "Tools, config, and capabilities for Billy (the AI assistant)",
       "status": "active",
       "color": "#F59E0B"
+    },
+    {
+      "id": "clutch-game",
+      "name": "CLUTCH",
+      "description": "Skill-based mobile arcade game - daily ranked mode, competitive leaderboards",
+      "status": "active",
+      "color": "#EC4899"
     }
   ],
-  "lastUpdated": "2026-02-16T22:13:00Z"
+  "lastUpdated": "2026-02-17T03:05:00Z"
 }
