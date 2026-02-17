@@ -801,6 +801,7 @@
       <div class="card card-full" id="goals">
         <div class="card-header">
           <h2 class="card-title">🎯 Goals</h2>
+          <button class="btn btn-small" onclick="openAddGoalModal()">+ Add Goal</button>
         </div>
         <div id="goals-list"></div>
       </div>
@@ -849,19 +850,29 @@
   <div class="modal-overlay" id="goal-modal" onclick="closeGoalModal(event)">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-header">
-        <h3>Update Goal Progress</h3>
+        <h3 id="goal-modal-header">Edit Goal</h3>
         <button class="modal-close" onclick="closeGoalModal()">&times;</button>
       </div>
       <div class="modal-form">
         <div class="form-group">
-          <label>Goal</label>
-          <div id="modal-goal-title" style="font-weight: 600;"></div>
+          <label>Goal Title</label>
+          <input type="text" class="form-input" id="modal-goal-title" placeholder="Enter goal title" required>
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <select class="form-input" id="modal-goal-type">
+            <option value="quarterly">Quarterly</option>
+            <option value="annual">Annual</option>
+          </select>
         </div>
         <div class="form-group">
           <label>Progress (%)</label>
-          <input type="number" class="form-input" id="modal-goal-progress" min="0" max="100">
+          <input type="number" class="form-input" id="modal-goal-progress" min="0" max="100" value="0">
         </div>
-        <button class="btn" onclick="saveGoalProgress()">Save</button>
+        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+          <button class="btn" style="flex: 1;" onclick="saveGoal()">Save</button>
+          <button class="btn" id="delete-goal-btn" style="background: var(--error);" onclick="deleteGoal()">Delete</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1083,7 +1094,7 @@
       const list = document.getElementById('goals-list');
       
       list.innerHTML = goalsData.goals.map(goal => `
-        <div class="goal-item">
+        <div class="goal-item" onclick="openGoalModal('${goal.id}')" style="cursor: pointer;">
           <div class="goal-header">
             <div class="goal-title">${goal.title}</div>
             <span class="goal-type ${goal.type}">${goal.type}</span>
@@ -1092,7 +1103,7 @@
             <div class="goal-progress-bar">
               <div class="goal-progress-fill" style="width: ${goal.progress}%"></div>
             </div>
-            <div class="goal-progress-text" onclick="openGoalModal('${goal.id}')">${goal.progress}%</div>
+            <div class="goal-progress-text">${goal.progress}%</div>
           </div>
         </div>
       `).join('');
@@ -1103,8 +1114,21 @@
       if (!goal) return;
       
       editingGoalId = goalId;
-      document.getElementById('modal-goal-title').textContent = goal.title;
+      document.getElementById('goal-modal-header').textContent = 'Edit Goal';
+      document.getElementById('modal-goal-title').value = goal.title;
+      document.getElementById('modal-goal-type').value = goal.type;
       document.getElementById('modal-goal-progress').value = goal.progress;
+      document.getElementById('delete-goal-btn').style.display = 'block';
+      document.getElementById('goal-modal').classList.add('active');
+    }
+    
+    function openAddGoalModal() {
+      editingGoalId = null;
+      document.getElementById('goal-modal-header').textContent = 'Add New Goal';
+      document.getElementById('modal-goal-title').value = '';
+      document.getElementById('modal-goal-type').value = 'quarterly';
+      document.getElementById('modal-goal-progress').value = 0;
+      document.getElementById('delete-goal-btn').style.display = 'none';
       document.getElementById('goal-modal').classList.add('active');
     }
     
@@ -1115,13 +1139,44 @@
       }
     }
     
-    function saveGoalProgress() {
+    function saveGoal() {
+      const title = document.getElementById('modal-goal-title').value.trim();
+      const type = document.getElementById('modal-goal-type').value;
+      const progress = parseInt(document.getElementById('modal-goal-progress').value) || 0;
+      
+      if (!title) {
+        alert('Please enter a goal title');
+        return;
+      }
+      
+      if (editingGoalId) {
+        // Editing existing goal
+        const goal = goalsData.goals.find(g => g.id === editingGoalId);
+        if (goal) {
+          goal.title = title;
+          goal.type = type;
+          goal.progress = progress;
+        }
+      } else {
+        // Adding new goal
+        goalsData.goals.push({
+          id: 'goal-' + Date.now(),
+          title: title,
+          type: type,
+          progress: progress
+        });
+      }
+      
+      saveData('life_goals', goalsData);
+      renderGoals();
+      closeGoalModal();
+    }
+    
+    function deleteGoal() {
       if (!editingGoalId) return;
+      if (!confirm('Delete this goal?')) return;
       
-      const goal = goalsData.goals.find(g => g.id === editingGoalId);
-      if (!goal) return;
-      
-      goal.progress = parseInt(document.getElementById('modal-goal-progress').value) || 0;
+      goalsData.goals = goalsData.goals.filter(g => g.id !== editingGoalId);
       saveData('life_goals', goalsData);
       renderGoals();
       closeGoalModal();
