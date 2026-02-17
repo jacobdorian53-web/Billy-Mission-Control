@@ -1,0 +1,53 @@
+{
+  "tasks": [
+    {
+      "id": "task-001",
+      "title": "Create 15 Static Ads for Hydro Vitality",
+      "description": "Design 15 1080x1080 static ads for Meta ads campaign using 5 creative angles",
+      "status": "in_progress",
+      "priority": "high",
+      "project": "hydro-vitality",
+      "createdAt": "2026-02-16T14:00:00Z",
+      "updatedAt": "2026-02-16T22:00:00Z",
+      "tags": ["marketing", "design", "meta-ads"],
+      "notes": "PIL attempt failed - pivoting to Canva approach"
+    },
+    {
+      "id": "task-002",
+      "title": "Fix Meta API Token",
+      "description": "Regenerate Meta API token - current one being rejected",
+      "status": "blocked",
+      "priority": "high",
+      "project": "hydro-vitality",
+      "createdAt": "2026-02-16T14:00:00Z",
+      "updatedAt": "2026-02-16T14:00:00Z",
+      "tags": ["api", "meta", "urgent"],
+      "notes": "Waiting on Jake to regenerate from Meta Business Suite"
+    },
+    {
+      "id": "task-003",
+      "title": "Build Mission Control Dashboard",
+      "description": "Create task tracking and activity dashboard similar to video reference",
+      "status": "in_progress",
+      "priority": "high",
+      "project": "billy-infrastructure",
+      "createdAt": "2026-02-16T22:13:00Z",
+      "updatedAt": "2026-02-16T22:13:00Z",
+      "tags": ["tooling", "dashboard", "productivity"]
+    },
+    {
+      "id": "task-004",
+      "title": "Enable Memory Flush + Session Memory",
+      "description": "Configure Clawdbot to flush memory before compaction and enable session memory search",
+      "status": "done",
+      "priority": "medium",
+      "project": "billy-infrastructure",
+      "createdAt": "2026-02-16T22:02:00Z",
+      "updatedAt": "2026-02-16T22:09:00Z",
+      "tags": ["config", "memory"],
+      "completedAt": "2026-02-16T22:09:00Z"
+    }
+  ],
+  "statuses": ["backlog", "in_progress", "review", "blocked", "done"],
+  "lastUpdated": "2026-02-16T22:13:00Z"
+}

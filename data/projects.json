@@ -1,0 +1,34 @@
+{
+  "projects": [
+    {
+      "id": "hydro-vitality",
+      "name": "Hydro Vitality",
+      "description": "Hydrogen water e-commerce brand - Meta ads, marketing, operations",
+      "status": "active",
+      "color": "#0EA5E9",
+      "knowledgeBase": "/Users/jacobdorian/Documents/Billy/Work:Eccomerce/Hydro/",
+      "metrics": {
+        "targetRoas": 1.85,
+        "breakEvenRoas": 1.53,
+        "adAccountId": "act_1533703017479787"
+      }
+    },
+    {
+      "id": "solace-bands",
+      "name": "Solace Bands",
+      "description": "Wellness band e-commerce brand",
+      "status": "active",
+      "color": "#8B5CF6",
+      "knowledgeBase": "/Users/jacobdorian/Documents/Billy/Work:Eccomerce/Solace/Solace Knowledge Base/",
+      "shopifyDomain": "solacebands.myshopify.com"
+    },
+    {
+      "id": "billy-infrastructure",
+      "name": "Billy Infrastructure",
+      "description": "Tools, config, and capabilities for Billy (the AI assistant)",
+      "status": "active",
+      "color": "#F59E0B"
+    }
+  ],
+  "lastUpdated": "2026-02-16T22:13:00Z"
+}
