@@ -246,6 +246,10 @@
       font-size: 0.8rem;
     }
     
+    .btn-danger {
+      background: var(--error);
+    }
+    
     .workout-list {
       max-height: 200px;
       overflow-y: auto;
@@ -259,6 +263,14 @@
       background: var(--bg-card);
       border-radius: 8px;
       margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .workout-item:hover {
+      border: 1px solid var(--accent);
+      margin: -1px;
+      margin-bottom: calc(0.5rem - 1px);
     }
     
     .workout-info {
@@ -324,6 +336,12 @@
       border-color: var(--accent);
     }
     
+    .task-description {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+    
     .add-task-form {
       display: flex;
       gap: 0.5rem;
@@ -340,6 +358,14 @@
       border-radius: 8px;
       padding: 1rem;
       margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .goal-item:hover {
+      border: 1px solid var(--accent);
+      margin: -1px;
+      margin-bottom: calc(0.75rem - 1px);
     }
     
     .goal-header {
@@ -393,11 +419,6 @@
       color: var(--accent);
       min-width: 45px;
       text-align: right;
-      cursor: pointer;
-    }
-    
-    .goal-progress-text:hover {
-      text-decoration: underline;
     }
     
     /* Quick Capture */
@@ -425,6 +446,14 @@
       border-radius: 6px;
       margin-bottom: 0.5rem;
       font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .capture-item:hover {
+      border: 1px solid var(--accent);
+      margin: -1px;
+      margin-bottom: calc(0.5rem - 1px);
     }
     
     .capture-text {
@@ -485,6 +514,14 @@
       background: var(--bg-card);
       border-radius: 8px;
       margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .reading-item:hover {
+      border: 1px solid var(--accent);
+      margin: -1px;
+      margin-bottom: calc(0.5rem - 1px);
     }
     
     .reading-info {
@@ -592,6 +629,8 @@
       padding: 1.5rem;
       width: 90%;
       max-width: 400px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     
     .modal-header {
@@ -620,6 +659,16 @@
       font-size: 0.8rem;
       color: var(--text-secondary);
       margin-bottom: 0.5rem;
+    }
+    
+    .modal-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .modal-buttons .btn {
+      flex: 1;
     }
     
     /* Responsive */
@@ -678,6 +727,10 @@
       
       .reading-tabs {
         flex-wrap: wrap;
+      }
+      
+      .modal-buttons {
+        flex-direction: column;
       }
     }
   </style>
@@ -776,6 +829,7 @@
       <div class="card card-full">
         <div class="card-header">
           <h2 class="card-title">✅ Personal Tasks</h2>
+          <button class="btn btn-small" onclick="openAddTaskModal()">+ Add Task</button>
         </div>
         <div class="kanban-mini">
           <div class="kanban-col kanban-col-backlog">
@@ -791,10 +845,6 @@
             <div id="tasks-done"></div>
           </div>
         </div>
-        <form class="add-task-form" onsubmit="addPersonalTask(event)">
-          <input type="text" class="form-input" id="new-task-input" placeholder="Add a new task...">
-          <button type="submit" class="btn">Add</button>
-        </form>
       </div>
       
       <!-- Goals Section -->
@@ -869,9 +919,138 @@
           <label>Progress (%)</label>
           <input type="number" class="form-input" id="modal-goal-progress" min="0" max="100" value="0">
         </div>
-        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-          <button class="btn" style="flex: 1;" onclick="saveGoal()">Save</button>
-          <button class="btn" id="delete-goal-btn" style="background: var(--error);" onclick="deleteGoal()">Delete</button>
+        <div class="modal-buttons">
+          <button class="btn" onclick="saveGoal()">Save</button>
+          <button class="btn btn-danger" id="delete-goal-btn" onclick="deleteGoal()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Workout Modal -->
+  <div class="modal-overlay" id="workout-modal" onclick="closeWorkoutModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="workout-modal-header">Edit Workout</h3>
+        <button class="modal-close" onclick="closeWorkoutModal()">&times;</button>
+      </div>
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Workout Type</label>
+          <select class="form-input" id="modal-workout-type">
+            <option value="Strength Training">🏋️ Strength Training</option>
+            <option value="Running">🏃 Running</option>
+            <option value="Cycling">🚴 Cycling</option>
+            <option value="Swimming">🏊 Swimming</option>
+            <option value="Yoga">🧘 Yoga</option>
+            <option value="HIIT">⚡ HIIT</option>
+            <option value="Walking">🚶 Walking</option>
+            <option value="Other">📌 Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Duration (minutes)</label>
+          <input type="number" class="form-input" id="modal-workout-duration" min="1" required>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <input type="text" class="form-input" id="modal-workout-notes" placeholder="Optional notes">
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" class="form-input" id="modal-workout-date">
+        </div>
+        <div class="modal-buttons">
+          <button class="btn" onclick="saveWorkout()">Save</button>
+          <button class="btn btn-danger" id="delete-workout-btn" onclick="deleteWorkout()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Task Modal -->
+  <div class="modal-overlay" id="task-modal" onclick="closeTaskModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="task-modal-header">Edit Task</h3>
+        <button class="modal-close" onclick="closeTaskModal()">&times;</button>
+      </div>
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Task Title</label>
+          <input type="text" class="form-input" id="modal-task-title" placeholder="Enter task title" required>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" class="form-input" id="modal-task-description" placeholder="Optional description">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-input" id="modal-task-status">
+            <option value="backlog">Backlog</option>
+            <option value="in_progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+        <div class="modal-buttons">
+          <button class="btn" onclick="saveTask()">Save</button>
+          <button class="btn btn-danger" id="delete-task-btn" onclick="deleteTask()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Capture Modal -->
+  <div class="modal-overlay" id="capture-modal" onclick="closeCaptureModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="capture-modal-header">Edit Capture</h3>
+        <button class="modal-close" onclick="closeCaptureModal()">&times;</button>
+      </div>
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Capture Text</label>
+          <input type="text" class="form-input" id="modal-capture-text" placeholder="Your thought, idea, or note..." required>
+        </div>
+        <div class="form-group">
+          <label>Captured At</label>
+          <div id="modal-capture-timestamp" style="color: var(--text-secondary); font-size: 0.9rem;"></div>
+        </div>
+        <div class="modal-buttons">
+          <button class="btn" onclick="saveCapture()">Save</button>
+          <button class="btn btn-danger" onclick="deleteCaptureFromModal()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Reading Modal -->
+  <div class="modal-overlay" id="reading-modal" onclick="closeReadingModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="reading-modal-header">Edit Book</h3>
+        <button class="modal-close" onclick="closeReadingModal()">&times;</button>
+      </div>
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" class="form-input" id="modal-reading-title" placeholder="Book title" required>
+        </div>
+        <div class="form-group">
+          <label>Author</label>
+          <input type="text" class="form-input" id="modal-reading-author" placeholder="Author name">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-input" id="modal-reading-status">
+            <option value="backlog">Backlog</option>
+            <option value="reading">Reading</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="modal-buttons">
+          <button class="btn" onclick="saveReading()">Save</button>
+          <button class="btn btn-danger" id="delete-reading-btn" onclick="deleteReading()">Delete</button>
         </div>
       </div>
     </div>
@@ -885,7 +1064,13 @@
     let capturesData = { captures: [] };
     let readingData = { items: [] };
     let currentReadingFilter = 'all';
+    
+    // Editing state
     let editingGoalId = null;
+    let editingWorkoutId = null;
+    let editingTaskId = null;
+    let editingCaptureId = null;
+    let editingReadingId = null;
     
     const quotes = [
       { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
@@ -922,6 +1107,13 @@
       goalsData = JSON.parse(localStorage.getItem('life_goals')) || await fetchJSON('data/goals.json');
       capturesData = JSON.parse(localStorage.getItem('life_captures')) || await fetchJSON('data/captures.json');
       readingData = JSON.parse(localStorage.getItem('life_reading')) || await fetchJSON('data/reading.json');
+      
+      // Ensure data structures exist
+      if (!fitnessData) fitnessData = { workouts: [], streakGoal: 5 };
+      if (!personalTasks) personalTasks = { tasks: [] };
+      if (!goalsData) goalsData = { goals: [] };
+      if (!capturesData) capturesData = { captures: [] };
+      if (!readingData) readingData = { items: [] };
       
       renderAll();
     }
@@ -963,7 +1155,7 @@
       document.getElementById('quote-author').textContent = `— ${quote.author}`;
     }
     
-    // Fitness functions
+    // ==================== WORKOUT FUNCTIONS ====================
     function calculateStreak() {
       if (!fitnessData.workouts.length) return 0;
       
@@ -1010,7 +1202,7 @@
         const date = new Date(w.date);
         const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         return `
-          <div class="workout-item">
+          <div class="workout-item" onclick="openWorkoutModal('${w.id}')">
             <div class="workout-info">
               <div class="workout-type">${w.type}</div>
               <div class="workout-details">${w.duration} min${w.notes ? ' • ' + w.notes : ''}</div>
@@ -1043,7 +1235,66 @@
       document.getElementById('workout-notes').value = '';
     }
     
-    // Personal Tasks functions
+    function openWorkoutModal(workoutId) {
+      const workout = fitnessData.workouts.find(w => w.id === workoutId);
+      if (!workout) return;
+      
+      editingWorkoutId = workoutId;
+      document.getElementById('workout-modal-header').textContent = 'Edit Workout';
+      document.getElementById('modal-workout-type').value = workout.type;
+      document.getElementById('modal-workout-duration').value = workout.duration;
+      document.getElementById('modal-workout-notes').value = workout.notes || '';
+      document.getElementById('modal-workout-date').value = new Date(workout.date).toISOString().split('T')[0];
+      document.getElementById('delete-workout-btn').style.display = 'block';
+      document.getElementById('workout-modal').classList.add('active');
+    }
+    
+    function closeWorkoutModal(event) {
+      if (!event || event.target === event.currentTarget) {
+        document.getElementById('workout-modal').classList.remove('active');
+        editingWorkoutId = null;
+      }
+    }
+    
+    function saveWorkout() {
+      const type = document.getElementById('modal-workout-type').value;
+      const duration = parseInt(document.getElementById('modal-workout-duration').value);
+      const notes = document.getElementById('modal-workout-notes').value;
+      const dateStr = document.getElementById('modal-workout-date').value;
+      
+      if (!duration) {
+        alert('Please enter a duration');
+        return;
+      }
+      
+      if (editingWorkoutId) {
+        const workout = fitnessData.workouts.find(w => w.id === editingWorkoutId);
+        if (workout) {
+          workout.type = type;
+          workout.duration = duration;
+          workout.notes = notes;
+          if (dateStr) {
+            workout.date = new Date(dateStr).toISOString();
+          }
+        }
+      }
+      
+      saveData('life_fitness', fitnessData);
+      renderWorkouts();
+      closeWorkoutModal();
+    }
+    
+    function deleteWorkout() {
+      if (!editingWorkoutId) return;
+      if (!confirm('Delete this workout?')) return;
+      
+      fitnessData.workouts = fitnessData.workouts.filter(w => w.id !== editingWorkoutId);
+      saveData('life_fitness', fitnessData);
+      renderWorkouts();
+      closeWorkoutModal();
+    }
+    
+    // ==================== TASK FUNCTIONS ====================
     function renderPersonalTasks() {
       const statuses = ['backlog', 'in_progress', 'done'];
       statuses.forEach(status => {
@@ -1051,50 +1302,94 @@
         const tasks = personalTasks.tasks.filter(t => t.status === status);
         
         container.innerHTML = tasks.map(t => `
-          <div class="task-mini" onclick="cycleTaskStatus('${t.id}')">
-            ${t.title}
+          <div class="task-mini" onclick="openTaskModal('${t.id}')">
+            <div>${t.title}</div>
+            ${t.description ? `<div class="task-description">${t.description}</div>` : ''}
           </div>
         `).join('');
       });
     }
     
-    function addPersonalTask(e) {
-      e.preventDefault();
-      const title = document.getElementById('new-task-input').value.trim();
-      if (!title) return;
-      
-      const task = {
-        id: 'personal-' + Date.now(),
-        title,
-        status: 'backlog',
-        createdAt: new Date().toISOString()
-      };
-      
-      personalTasks.tasks.push(task);
-      saveData('life_personal_tasks', personalTasks);
-      renderPersonalTasks();
-      
-      document.getElementById('new-task-input').value = '';
+    function openAddTaskModal() {
+      editingTaskId = null;
+      document.getElementById('task-modal-header').textContent = 'Add New Task';
+      document.getElementById('modal-task-title').value = '';
+      document.getElementById('modal-task-description').value = '';
+      document.getElementById('modal-task-status').value = 'backlog';
+      document.getElementById('delete-task-btn').style.display = 'none';
+      document.getElementById('task-modal').classList.add('active');
     }
     
-    function cycleTaskStatus(taskId) {
+    function openTaskModal(taskId) {
       const task = personalTasks.tasks.find(t => t.id === taskId);
       if (!task) return;
       
-      const statusOrder = ['backlog', 'in_progress', 'done'];
-      const currentIndex = statusOrder.indexOf(task.status);
-      task.status = statusOrder[(currentIndex + 1) % statusOrder.length];
+      editingTaskId = taskId;
+      document.getElementById('task-modal-header').textContent = 'Edit Task';
+      document.getElementById('modal-task-title').value = task.title;
+      document.getElementById('modal-task-description').value = task.description || '';
+      document.getElementById('modal-task-status').value = task.status;
+      document.getElementById('delete-task-btn').style.display = 'block';
+      document.getElementById('task-modal').classList.add('active');
+    }
+    
+    function closeTaskModal(event) {
+      if (!event || event.target === event.currentTarget) {
+        document.getElementById('task-modal').classList.remove('active');
+        editingTaskId = null;
+      }
+    }
+    
+    function saveTask() {
+      const title = document.getElementById('modal-task-title').value.trim();
+      const description = document.getElementById('modal-task-description').value.trim();
+      const status = document.getElementById('modal-task-status').value;
+      
+      if (!title) {
+        alert('Please enter a task title');
+        return;
+      }
+      
+      if (editingTaskId) {
+        // Editing existing task
+        const task = personalTasks.tasks.find(t => t.id === editingTaskId);
+        if (task) {
+          task.title = title;
+          task.description = description;
+          task.status = status;
+        }
+      } else {
+        // Adding new task
+        personalTasks.tasks.push({
+          id: 'personal-' + Date.now(),
+          title: title,
+          description: description,
+          status: status,
+          createdAt: new Date().toISOString()
+        });
+      }
       
       saveData('life_personal_tasks', personalTasks);
       renderPersonalTasks();
+      closeTaskModal();
     }
     
-    // Goals functions
+    function deleteTask() {
+      if (!editingTaskId) return;
+      if (!confirm('Delete this task?')) return;
+      
+      personalTasks.tasks = personalTasks.tasks.filter(t => t.id !== editingTaskId);
+      saveData('life_personal_tasks', personalTasks);
+      renderPersonalTasks();
+      closeTaskModal();
+    }
+    
+    // ==================== GOAL FUNCTIONS ====================
     function renderGoals() {
       const list = document.getElementById('goals-list');
       
       list.innerHTML = goalsData.goals.map(goal => `
-        <div class="goal-item" onclick="openGoalModal('${goal.id}')" style="cursor: pointer;">
+        <div class="goal-item" onclick="openGoalModal('${goal.id}')">
           <div class="goal-header">
             <div class="goal-title">${goal.title}</div>
             <span class="goal-type ${goal.type}">${goal.type}</span>
@@ -1182,7 +1477,7 @@
       closeGoalModal();
     }
     
-    // Captures functions
+    // ==================== CAPTURE FUNCTIONS ====================
     function renderCaptures() {
       const list = document.getElementById('capture-list');
       const captures = [...capturesData.captures]
@@ -1194,10 +1489,9 @@
           month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
         });
         return `
-          <div class="capture-item">
+          <div class="capture-item" onclick="openCaptureModal('${c.id}')">
             <span class="capture-text">${c.text}</span>
             <span class="capture-time">${time}</span>
-            <button class="capture-delete" onclick="deleteCapture('${c.id}')">×</button>
           </div>
         `;
       }).join('');
@@ -1221,28 +1515,76 @@
       document.getElementById('capture-input').value = '';
     }
     
-    function deleteCapture(captureId) {
-      capturesData.captures = capturesData.captures.filter(c => c.id !== captureId);
-      saveData('life_captures', capturesData);
-      renderCaptures();
+    function openCaptureModal(captureId) {
+      const capture = capturesData.captures.find(c => c.id === captureId);
+      if (!capture) return;
+      
+      editingCaptureId = captureId;
+      document.getElementById('capture-modal-header').textContent = 'Edit Capture';
+      document.getElementById('modal-capture-text').value = capture.text;
+      
+      const timestamp = new Date(capture.createdAt).toLocaleString('en-US', {
+        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
+        hour: 'numeric', minute: '2-digit'
+      });
+      document.getElementById('modal-capture-timestamp').textContent = timestamp;
+      
+      document.getElementById('capture-modal').classList.add('active');
     }
     
-    // Reading functions
+    function closeCaptureModal(event) {
+      if (!event || event.target === event.currentTarget) {
+        document.getElementById('capture-modal').classList.remove('active');
+        editingCaptureId = null;
+      }
+    }
+    
+    function saveCapture() {
+      const text = document.getElementById('modal-capture-text').value.trim();
+      
+      if (!text) {
+        alert('Please enter some text');
+        return;
+      }
+      
+      if (editingCaptureId) {
+        const capture = capturesData.captures.find(c => c.id === editingCaptureId);
+        if (capture) {
+          capture.text = text;
+        }
+      }
+      
+      saveData('life_captures', capturesData);
+      renderCaptures();
+      closeCaptureModal();
+    }
+    
+    function deleteCaptureFromModal() {
+      if (!editingCaptureId) return;
+      if (!confirm('Delete this capture?')) return;
+      
+      capturesData.captures = capturesData.captures.filter(c => c.id !== editingCaptureId);
+      saveData('life_captures', capturesData);
+      renderCaptures();
+      closeCaptureModal();
+    }
+    
+    // ==================== READING FUNCTIONS ====================
     function renderReading() {
       const list = document.getElementById('reading-list');
-      let items = readingData.items;
+      let items = readingData.items || [];
       
       if (currentReadingFilter !== 'all') {
         items = items.filter(i => i.status === currentReadingFilter);
       }
       
       list.innerHTML = items.map(item => `
-        <div class="reading-item">
+        <div class="reading-item" onclick="openReadingModal('${item.id}')">
           <div class="reading-info">
             <div class="reading-title">${item.title}</div>
             <div class="reading-author">${item.author || 'Unknown'}</div>
           </div>
-          <span class="reading-status ${item.status}" onclick="cycleReadingStatus('${item.id}')">${item.status}</span>
+          <span class="reading-status ${item.status}">${item.status}</span>
         </div>
       `).join('');
     }
@@ -1278,19 +1620,61 @@
       document.getElementById('reading-author').value = '';
     }
     
-    function cycleReadingStatus(itemId) {
+    function openReadingModal(itemId) {
       const item = readingData.items.find(i => i.id === itemId);
       if (!item) return;
       
-      const statusOrder = ['backlog', 'reading', 'completed'];
-      const currentIndex = statusOrder.indexOf(item.status);
-      item.status = statusOrder[(currentIndex + 1) % statusOrder.length];
+      editingReadingId = itemId;
+      document.getElementById('reading-modal-header').textContent = 'Edit Book';
+      document.getElementById('modal-reading-title').value = item.title;
+      document.getElementById('modal-reading-author').value = item.author || '';
+      document.getElementById('modal-reading-status').value = item.status;
+      document.getElementById('delete-reading-btn').style.display = 'block';
+      document.getElementById('reading-modal').classList.add('active');
+    }
+    
+    function closeReadingModal(event) {
+      if (!event || event.target === event.currentTarget) {
+        document.getElementById('reading-modal').classList.remove('active');
+        editingReadingId = null;
+      }
+    }
+    
+    function saveReading() {
+      const title = document.getElementById('modal-reading-title').value.trim();
+      const author = document.getElementById('modal-reading-author').value.trim();
+      const status = document.getElementById('modal-reading-status').value;
+      
+      if (!title) {
+        alert('Please enter a title');
+        return;
+      }
+      
+      if (editingReadingId) {
+        const item = readingData.items.find(i => i.id === editingReadingId);
+        if (item) {
+          item.title = title;
+          item.author = author;
+          item.status = status;
+        }
+      }
       
       saveData('life_reading', readingData);
       renderReading();
+      closeReadingModal();
     }
     
-    // Navigation
+    function deleteReading() {
+      if (!editingReadingId) return;
+      if (!confirm('Delete this book?')) return;
+      
+      readingData.items = readingData.items.filter(i => i.id !== editingReadingId);
+      saveData('life_reading', readingData);
+      renderReading();
+      closeReadingModal();
+    }
+    
+    // ==================== NAVIGATION ====================
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('open');
     }
@@ -1311,7 +1695,13 @@
     
     // Keyboard shortcuts
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeGoalModal();
+      if (e.key === 'Escape') {
+        closeGoalModal();
+        closeWorkoutModal();
+        closeTaskModal();
+        closeCaptureModal();
+        closeReadingModal();
+      }
     });
   </script>
 </body>
