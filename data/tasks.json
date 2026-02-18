@@ -4,13 +4,14 @@
       "id": "task-001",
       "title": "Create 15 Static Ads for Hydro Vitality",
       "description": "Design 15 1080x1080 static ads for Meta ads campaign using 5 creative angles",
-      "status": "in_progress",
+      "status": "done",
       "priority": "high",
       "project": "hydro-vitality",
       "createdAt": "2026-02-16T14:00:00Z",
-      "updatedAt": "2026-02-16T22:00:00Z",
+      "updatedAt": "2026-02-17T21:01:00Z",
+      "completedAt": "2026-02-17T21:01:00Z",
       "tags": ["marketing", "design", "meta-ads"],
-      "notes": "PIL attempt failed - pivoting to Canva approach"
+      "notes": "Completed - 15 static ads created"
     },
     {
       "id": "task-002",
