@@ -51,28 +51,42 @@
     },
     {
       "id": "task-005",
-      "title": "Build CLUTCH Web Prototype",
-      "description": "Create playable browser prototype with core mechanic: auto-rotating orb, tap to dash through ring gaps",
-      "status": "in_progress",
-      "priority": "high",
+      "title": "🎮 CLUTCH: Web Prototype v7",
+      "description": "Skill-based arcade game. Player orb rotates, tap to dash through ring gaps. Survive X seconds per level, death resets to Level 1.",
+      "status": "backlog",
+      "priority": "low",
       "project": "clutch-game",
       "createdAt": "2026-02-17T03:04:00Z",
-      "updatedAt": "2026-02-17T03:04:00Z",
-      "tags": ["game-dev", "prototype", "web"]
+      "updatedAt": "2026-02-17T20:00:00Z",
+      "tags": ["game-dev", "prototype", "fun-project"],
+      "notes": "PARKED - Fun side project for later. Current state: v7 deployed with Practice Mode + Daily Challenge. 10 levels, escalating difficulty. Last issue: gap placement code updated but may need testing. Live at: https://jacobdorian53-web.github.io/Clutch-prototype/ | Code: /Users/jacobdorian/clawd/clutch-prototype/"
     },
     {
       "id": "task-006",
-      "title": "CLUTCH iOS App Development",
-      "description": "Port prototype to native iOS with Swift/Flutter, add daily ranked mode, leaderboards, social features",
+      "title": "🎮 CLUTCH: Polish & Tune Gameplay",
+      "description": "Fine-tune ring speed, gap count, level durations based on playtesting. Make it feel engaging without being frustrating.",
       "status": "backlog",
-      "priority": "medium",
+      "priority": "low",
       "project": "clutch-game",
       "createdAt": "2026-02-17T03:04:00Z",
-      "updatedAt": "2026-02-17T03:04:00Z",
-      "tags": ["game-dev", "ios", "mobile"]
+      "updatedAt": "2026-02-17T20:00:00Z",
+      "tags": ["game-dev", "balance", "fun-project"],
+      "notes": "PARKED - Last feedback: wanted more gaps per ring, faster pace. Implemented minGaps/maxGaps system + even gap distribution. Needs playtesting to verify."
     },
     {
       "id": "task-007",
+      "title": "🎮 CLUTCH: iOS App Development",
+      "description": "Port prototype to native iOS with Swift/Flutter, add leaderboards, social features, App Store submission",
+      "status": "backlog",
+      "priority": "low",
+      "project": "clutch-game",
+      "createdAt": "2026-02-17T03:04:00Z",
+      "updatedAt": "2026-02-17T20:00:00Z",
+      "tags": ["game-dev", "ios", "mobile", "fun-project"],
+      "notes": "PARKED - Future phase after web prototype is solid. Monetization: Pro $2.99/mo (no ads, themes, stats)"
+    },
+    {
+      "id": "task-008",
       "title": "📚 YouTube AI Ads: Audit TikTok/Meta creatives",
       "description": "Identify top performers that could work on YouTube Shorts. TikTok creatives translate well to Shorts — 45% of Shorts users aren't on TikTok.",
       "status": "backlog",
@@ -84,7 +98,7 @@
       "notes": "Source: Echelonn playbook. Start with existing winners before creating new."
     },
     {
-      "id": "task-008",
+      "id": "task-009",
       "title": "📚 YouTube AI Ads: Pick product/angle to test",
       "description": "Choose ONE product and angle to test on YouTube. Start simple — don't overthink targeting. Let creative do the segmentation.",
       "status": "backlog",
@@ -96,7 +110,7 @@
       "notes": "Decide funnel type: Problem-aware → VSL | Solution-aware → Quiz"
     },
     {
-      "id": "task-009",
+      "id": "task-010",
       "title": "📚 YouTube AI Ads: Create 3-5 AI video variations",
       "description": "Use the Echelonn script structures: Long-form (2-5 min) for VSL funnel or Shorts dialogue format for quiz funnel.",
       "status": "backlog",
@@ -108,7 +122,7 @@
       "notes": "Long-form structure: Hook → Problem → Villain → Stakes → Solution → Benefits → CTA → Close. Shorts: Qualifier + urgency, clear enemy, objection handling in dialogue."
     },
     {
-      "id": "task-010",
+      "id": "task-011",
       "title": "📚 YouTube AI Ads: Build landing page",
       "description": "VSL sales letter for long-form ads OR quiz funnel for Shorts. Match funnel to audience awareness level.",
       "status": "backlog",
@@ -120,7 +134,7 @@
       "notes": "Quiz funnels qualify, build engagement, and segment into right offer path."
     },
     {
-      "id": "task-011",
+      "id": "task-012",
       "title": "📚 YouTube AI Ads: Set up attribution tracking",
       "description": "Track the halo effect — YT drives Google/Amazon/Shopify conversions it doesn't report. One brand saw 3.75X reported → 5.25X actual.",
       "status": "backlog",
@@ -132,7 +146,7 @@
       "notes": "Factor in Shopify and Amazon to get true ROAS."
     },
     {
-      "id": "task-012",
+      "id": "task-013",
       "title": "📚 YouTube AI Ads: Research AI video tools",
       "description": "Find AI video generation tools for creating spokesperson/UGC-style ads at scale. Volume is key — brands doing $10M/mo launch 400+ creatives/month.",
       "status": "backlog",
@@ -145,5 +159,5 @@
     }
   ],
   "statuses": ["backlog", "in_progress", "review", "blocked", "done"],
-  "lastUpdated": "2026-02-17T14:20:00Z"
+  "lastUpdated": "2026-02-17T20:00:00Z"
 }
